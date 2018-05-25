@@ -1,7 +1,7 @@
 {
     "name": "simple_chat",
     "version": "0.0.1",
-    "description": "Not a Telegram, don't ban pls",
+    "description": "",
     "dependencies": {
         "express": "^4.15.2",
         "express-session": "^1.15.6",
