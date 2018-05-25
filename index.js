@@ -218,6 +218,10 @@ io.on('connection', function(socket){
     });
 });
 
-http.listen(8080, function(){
-    console.log('listening on localhost:8080');
+
+
+var port = process.env.PORT || 5000;
+
+http.listen(port, function(){
+    console.log('listening on port ' + port);
 });
