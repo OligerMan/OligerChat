@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+    <head>
+        <title> OligerChat </title>
+        
+        <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+        <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.1.js"></script>
+        
+        <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic|Ubuntu" rel="stylesheet">
+       
+        <link href="chat.css" rel="stylesheet">
+        <script type="text/javascript" src="chat.js"></script>
+
+    </head>
+    <body>
+        <div class="container">
+            <div class="title">
+                <div class="title_text">
+                    OligerChat
+                </div>
+                <div id="sign_out">
+                    Sign out
+                </div>
+            </div>
+            <ul id="messages"></ul>
+            <form action="">
+                <input id="m" autocomplete="off" />
+                <button> Send </button>
+            </form>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,169 @@
+* {
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+    background: #ddd;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font: 12px Helvetica solid white, Arial;
+}
+
+.container{
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    max-width: 1000px;
+    display: flex; 
+    flex: 1;
+    flex-direction: column;
+}
+
+#main_title {
+    font-style: normal;
+    font-size: 32px;
+    margin: 30px;
+    padding: 20px;
+    padding-top: 100px;
+    margin-top: -100px;
+    background: #82e0ff;
+    border-radius: 10px;
+    text-align: center;
+    font-family: 'Ubuntu', sans-serif;
+}
+
+#blocks_buffer{
+    margin: 0 auto;
+    padding: 10px;
+    width: 100%;
+    display: flex;
+    flex: 1 200px;
+    font-size: 20px;
+    flex-direction: row;
+    align-self: center;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.block{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    max-height: 350px;
+    max-width: 350px;
+    margin: 20px;
+    padding: 10px;
+    text-align: center;
+    background: #31c5f7;
+    border-radius: 10px;
+}
+
+.block_title{
+    border-radius: 10px;
+    padding: 10px;
+    margin: 10px 30px;
+    max-width: 300px;
+    background: #82e0ff;
+}
+
+.block_text{
+    padding: 20px;
+    font-size: 16px;
+    background: transparent;
+}
+
+.sign_in_form{
+    padding: 0;
+    margin: 10px;
+    background: transparent;
+}
+
+.input_block{
+    background: transparent;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.input_form{
+    padding: 10px;
+    margin: 10px;
+    border-radius: 5px;
+    width: 170px;
+}
+
+.form_name{
+    background: transparent;
+    font-size: 14px;
+    text-align: center;
+    padding: 10px;
+    margin: 10px;
+}
+
+form{
+    background: transparent;
+    display: flex;
+    flex-direction: column;
+}
+
+.form_name_dict{
+    display: flex;
+    flex-direction: column;
+    background: transparent;
+    max-width: 105px;
+}
+
+.form_container{
+    margin-top: 20px;
+    max-height: 180px;
+    display: flex;
+    flex-direction: row;
+    background: transparent;
+}
+
+.button{
+    margin: 10px;
+    margin-right: 25px;
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    background: transparent;
+    left: 0px;
+}
+
+form button {
+    border: none; 
+    padding: 10px; 
+    border-radius: 5px;
+}
+
+#sign_in_button{
+    background: #82e0ff;
+    margin-left: auto;
+    float: right;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2);
+    transition: all 200ms ease-out;
+}
+
+#sign_in_button:hover{
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.5);
+}
+
+#register_button{
+    background: transparent;
+    float: left;
+    transition: all 200ms ease-out;
+}
+
+#register_button:hover{
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.5);
+}

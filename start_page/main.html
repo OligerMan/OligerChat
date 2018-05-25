@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+    <head>
+        <title>
+            OligerChat
+        </title>
+        
+
+        <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic|Ubuntu" rel="stylesheet">
+       
+        <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+        <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.1.js"></script>
+        
+        <link href="/start_page/main.css" rel="stylesheet">
+        <script type="text/javascript" src="/start_page/main.js"></script>
+    </head>
+
+    <body>
+        <div class="container">
+            <div id="main_title">
+                OligerChat
+            </div>
+            <div id="blocks_buffer">
+                <div class="block">
+                    <div class="block_title" id="login_title">
+                        Sign in
+                    </div>
+                    <div class="sign_in_form">
+                        <form action="" id="login_type_form">
+                            <div class="form_container">
+                                <div class="form_name_dict">
+                                    <div class="form_name">
+                                        Login: 
+                                    </div>
+                                    <div class="form_name">
+                                        Password: 
+                                    </div>
+                                </div>
+                                <div class="input_block">
+                                    <input class="input_form" id="login_form" autocomplete="off"/>
+                                    <input type="password" class="input_form" id="password_form" autocomplete="off"/>
+                                </div>
+                            </div>
+                            <div class="button">
+                                <button type="button" id="register_button">
+                                    Create account
+                                </button>
+                                <button type="button" id="sign_in_button">
+                                    Sign in
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="block">
+                    <div class="block_title">
+                        About
+                    </div>
+                    <div class="block_text">
+                        Just first try to do a chat. 
+                        <br><br>
+                        TODO: rooms and user profiles
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
