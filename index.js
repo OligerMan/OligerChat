@@ -128,7 +128,6 @@ io.on('connection', function(socket){
 
     socket.on('disconnect', function(){
         console.log('user disconnected');
-        io.emit('chat_message', 'Somebody disconnected');
         socket.handshake.session.islogged -= 1;
         socket.handshake.session.logged_as = logged_as;
         socket.handshake.session.save();
