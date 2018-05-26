@@ -291,7 +291,8 @@ io.on('connection', function(socket){
     socket.on('room_connect', function(room_name){
         
         var room_id = getRoomId(room_name);
-        if(room_id != undefined){
+        console.log('Connection to room ' + room_name + ' with id ' + room_id);
+        if(existing_rooms[room_id] != undefined){
             if(!existing_rooms[room_id].status){
                 current_room = room_id;
                 socket.emit('room_connect', existing_rooms[room_id].messages, room_name);
