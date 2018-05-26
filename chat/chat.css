@@ -107,14 +107,11 @@ form button {
 }
 
 .block{
-    display: none;
+    display: flex;
     flex-direction: column;
     width: 100%;
-    height: 100%;
-    max-height: 350px;
     max-width: 350px;
-    margin: auto;
-    margin-top: 80px;
+    margin: 10px;
     padding: 10px;
     text-align: center;
     background: #82e0ff;
@@ -153,4 +150,23 @@ form button {
     border-radius: 3px;
     padding: 10px;
     margin: 10px;
+}
+
+#chat_container{
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    max-width: 1000px;
+    display: flex; 
+    flex-direction: row;
+    justify-content: center;
+    min-width: 500px;
+}
+
+#message_block{
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    margin: 0 30px;
 }

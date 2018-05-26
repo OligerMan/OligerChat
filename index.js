@@ -113,7 +113,6 @@ function getHash(login){
 function welcomeMessage(socket){
     socket.emit('chat_message', 'Welcome!!!');
     socket.emit('chat_message', 'This is global chat without message save, if you want to save your messages, try to enter to room or create your room');
-    socket.emit('chat_message', 'P.S. Rooms search is not working now, sorry');
     socket.emit('chat_message', 'There are some commands for you:');
     socket.emit('chat_message', '!newroom <room_name> - creates new public room');
     socket.emit('chat_message', '!myID - returns your nickname');
@@ -121,7 +120,6 @@ function welcomeMessage(socket){
 }
 
 /////////////////////////////////////////////////////
-
 
 io.on('connection', function(socket){
 
@@ -177,13 +175,18 @@ io.on('connection', function(socket){
         else if(cmd.substr(0,7) == 'newroom'){
             //var status = +msg.substr(8,1);
             var status = 0;
+            var roomName = msg.substr(8);
 
-            var new_room = new ChatRoom(msg.substr(8), status);
+            var new_room = new ChatRoom(roomName, status);
             //var new_room = new ChatRoom(msg.substr(10), status);
-
-            new_room.members.push(logged_as);
-            existing_rooms.push(new_room);
-            console.log('Room ' + new_room.name + ' created with status ' + status);
+            if(roomName.length <= 32){
+                new_room.members.push(logged_as);
+                existing_rooms.push(new_room);
+                io.emit('update_room_list');
+                console.log('Room ' + new_room.name + ' created with status ' + status);
+            }else{
+                socket.emit('chat_message', 'Room name is too long(more than 32 symbols)')
+            }
         }
         else if(cmd == 'help'){
             socket.emit('chat_message', 'There are some commands for you:');
@@ -269,7 +272,7 @@ io.on('connection', function(socket){
 
         if(!existing_rooms[room_id].status){
             current_room = room_id;
-            socket.emit('room_connect', existing_rooms[room_id].messages);
+            socket.emit('room_connect', existing_rooms[room_id].messages, room_name);
             console.log('User ' + logged_as + ' entered to room ' + room_name.trim());
         }
         else{

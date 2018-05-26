@@ -15,9 +15,6 @@
     <body>
         <div class="container">
             <div class="title">
-                <div class="title_button" id="choose_room">
-                    Choose room
-                </div>
                 <div class="title_text">
                     OligerChat
                 </div>
@@ -26,22 +23,25 @@
                 </div>
             </div>
 
-            
-            <div class="block">
-                <div class="block_title">
-                    Choose room
+            <div id="chat_container">
+                <div class="block">
+                    <div class="block_title">
+                        Current room: public
+                    </div>
+                    <div id="find_line">
+                        <input id="line" autocomplete="off" />
+                    </div>
+                    <div id="room_list"></div>
                 </div>
-                <div id="find_line">
-                    <input id="line" autocomplete="off" />
+                
+                <div id="message_block">
+                    <ul id="messages"></ul>
+                    <form action="">
+                        <input id="m" autocomplete="off" />
+                        <button> Send </button>
+                    </form>
                 </div>
-                <div id="room_list"></div>
             </div>
-
-            <ul id="messages"></ul>
-            <form action="">
-                <input id="m" autocomplete="off" />
-                <button> Send </button>
-            </form>
         </div>
     </body>
 </html>

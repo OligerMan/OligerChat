@@ -1,10 +1,14 @@
-function showRoomList(room_list){
+function showRoomList(room_list, search){
     $('#room_list').empty();
+
     for(var i = 0; i < room_list.length; i++){
-        $('#room_list').append('\
-        <div class="room_button" id="room' + i + '">\
-            ' + room_list[i].name + '\
-        </div>');
+        var status = room_list[i].name.indexOf(search) + 1;
+        if(status){
+            $('#room_list').append('\
+            <div class="room_button" id="room' + i + '">\
+                ' + room_list[i].name + '\
+            </div>');
+        }
     }
 }
 
@@ -27,6 +31,8 @@ $(function () {
     emit_info[0] = 0;
 
     socket.emit('get_login');
+    
+    socket.emit('get_room_list');
 
     $('#room_list').on("click", ".room_button", function(){
         var room_name = $(this).text();
@@ -66,35 +72,26 @@ $(function () {
 
     var isFindLine = false;
 
-    $('#choose_room').click(function(){
-        if(!isFindLine){
-            socket.emit('get_room_list');
-            $('form').css('display', 'none');
-            $('#messages').css('display', 'none');
-            $('.block').css('display', 'flex').animate({opacity: 1, top: '50%'}, 1000);
-            isFindLine = true;
-        }
-        else{
-            $('form').css('display', 'flex');
-            $('#messages').css('display', 'flex');
-            $('.block').css('display', 'none').animate({opacity: 1, top: '50%'}, 1000);
-            isFindLine = false;
-        }
-    });
-
-    $('#line').change(function(){
+    $('#line').keyup(function(){
         socket.emit('get_room_list');
     });
 
     socket.on('set_room_list', function(room_list){
-        showRoomList(room_list);
+        showRoomList(room_list, $('#line').val());
     });
 
-    socket.on('room_connect', function(messages){
-        $('form').css('display', 'flex');
-        $('#messages').css('display', 'flex');
-        $('.block').css('display', 'none').animate({opacity: 1, top: '50%'}, 1000);
+    socket.on('room_connect', function(messages, room_name){
         isFindLine = false;
         addMessages(messages, emit_info[0]);
+        
+        room_name = room_name.trim();
+        if(room_name.length > 15){
+            room_name = room_name.substr(0, 12) + '...';
+        }
+        $('.block_title').text('Current room: ' + room_name);
+    });
+
+    socket.on('update_room_list', function(){
+        socket.emit('get_room_list');
     });
 });
