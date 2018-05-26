@@ -4,10 +4,7 @@ function showRoomList(room_list, search){
     for(var i = 0; i < room_list.length; i++){
         var status = room_list[i].name.indexOf(search) + 1;
         if(status){
-            $('#room_list').append('\
-            <div class="room_button" id="room' + i + '">\
-                ' + room_list[i].name + '\
-            </div>');
+            $('#room_list').append($('<div class="room_button" id="room' + i + '">').text(room_list[i].name));
         }
     }
 }
