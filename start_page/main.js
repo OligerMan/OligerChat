@@ -17,6 +17,14 @@ $(function(){
             $('#login_title').text('Register');
             form_state = 'register';
             $('#login_type_form').attr('id', 'register_type_form');
+
+            $('#sign_in_button').css('background', '#31c5f7');
+            $('#register_button').css('background', '#82e0ff');
+            $('.button').css('flex-direction', 'row-reverse');
+            $('#sign_in_button').css('float', 'left');
+            $('#register_button').css('float', 'right');
+            $('#sign_in_button').css('margin-left', '0px');
+            $('#register_button').css('margin-left', 'auto');
         }
         else if(form_state == 'register'){
             var login = $('#login_form').val();
@@ -72,6 +80,14 @@ $(function(){
             $('#login_title').text('Sign in');
             form_state = 'login';
             $('#register_type_form').attr('id', 'login_type_form');
+
+            $('#sign_in_button').css('background', '#82e0ff');
+            $('#register_button').css('background', '#31c5f7');
+            $('.button').css('flex-direction', 'row');
+            $('#sign_in_button').css('float', 'right');
+            $('#register_button').css('float', 'left');
+            $('#sign_in_button').css('margin-left', 'auto');
+            $('#register_button').css('margin-left', '0px');
         }
         else if(form_state == 'login'){
             var login = $('#login_form').val();
