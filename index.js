@@ -291,15 +291,16 @@ io.on('connection', function(socket){
     socket.on('room_connect', function(room_name){
         
         var room_id = getRoomId(room_name);
-
-        if(!existing_rooms[room_id].status){
-            current_room = room_id;
-            socket.emit('room_connect', existing_rooms[room_id].messages, room_name);
-            console.log('User ' + logged_as + ' entered to room ' + room_name.trim());
-            existing_rooms[room_id].socket_list.push(socket);
-        }
-        else{
-            socket.emit('chat_message', 'This room is private');
+        if(room_id != undefined){
+            if(!existing_rooms[room_id].status){
+                current_room = room_id;
+                socket.emit('room_connect', existing_rooms[room_id].messages, room_name);
+                console.log('User ' + logged_as + ' entered to room ' + room_name.trim());
+                existing_rooms[room_id].socket_list.push(socket);
+            }
+            else{
+                socket.emit('chat_message', 'This room is private');
+            }
         }
     });
 });
