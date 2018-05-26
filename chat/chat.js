@@ -54,15 +54,7 @@ $(function () {
             messages_block.children[0].style.background = '#888';
         }
     });
-    socket.on('hi', function(login){
-        if(emit_info[0] == 0){
-            emit_info[0] = login;
-            $('#messages').prepend($('<li>').text("Your ID is " + login));
-            socket.emit('login_accepted');
-        }
-        $('#messages').prepend($('<li>').text("Welcome " + login + "!"));
-    });
-
+    
     socket.on('set_login', function(login){
         emit_info[0] = login;
     });

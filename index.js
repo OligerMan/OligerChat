@@ -110,6 +110,18 @@ function getHash(login){
 
 /////////////////////////////////////////////////////
 
+function welcomeMessage(socket){
+    socket.emit('chat_message', 'Welcome!!!');
+    socket.emit('chat_message', 'This is global chat without message save, if you want to save your messages, try to enter to room or create your room');
+    socket.emit('chat_message', 'P.S. Rooms search is not working now, sorry');
+    socket.emit('chat_message', 'There are some commands for you:');
+    socket.emit('chat_message', '!newroom <room_name> - creates new public room');
+    socket.emit('chat_message', '!myID - returns your nickname');
+    socket.emit('chat_message', '!help - shows this message');
+}
+
+/////////////////////////////////////////////////////
+
 
 io.on('connection', function(socket){
 
@@ -125,6 +137,7 @@ io.on('connection', function(socket){
 
     var logged_as = undefined;
     var current_room = undefined;
+    var first_time = false;
 
     if(socket.handshake.session.logged_as){
         logged_as = socket.handshake.session.logged_as;
@@ -202,10 +215,10 @@ io.on('connection', function(socket){
             users.push(new User(login, sha256(password)));
             socket.handshake.session.logged_as = login;
             logged_as = login;
-            io.emit('hi', login);
-            socket.emit('register_success');
+
             console.log("User " + login + ' registered');
-            socket.emit('chat_message', '');
+            socket.emit('register_success');
+            first_time = true;
         }
         else{
             socket.emit('error_code', 'Login already used');
@@ -214,6 +227,7 @@ io.on('connection', function(socket){
 
     socket.on('get_login', function(){
         socket.emit('set_login', logged_as);
+        welcomeMessage(socket);
     });
 
     socket.on('login', function(login, password){
