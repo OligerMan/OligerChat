@@ -57,6 +57,7 @@ class ChatRoom{
         this.name = name;
         this.status = private_status;
         this.members = new Array();
+        this.socket_list = new Array();
     }
 }
 
@@ -148,6 +149,14 @@ io.on('connection', function(socket){
         socket.handshake.session.islogged -= 1;
         socket.handshake.session.logged_as = logged_as;
         socket.handshake.session.save();
+        
+        if(current_room != undefined){
+            var index = existing_rooms[current_room].socket_list.indexOf(socket);
+            if(index != -1){
+                existing_rooms[current_room].socket_list.splice(index, 1);
+                console.log('Socket disconnected from room');
+            }
+        }
     });
 
     socket.on('chat_message', function(emit_info){
@@ -156,9 +165,13 @@ io.on('connection', function(socket){
                 socket.emit('chat_message', 'Don\'t try to change nickname, lul ' + emit_info[0] + ' is not ' + logged_as);
             }
             else if(emit_info[1].length < 300){
+                
                 console.log('message: ' + emit_info[1] + ' from user ' + logged_as + ' to room ' + existing_rooms[current_room].name);
-                io.emit('chat_message', logged_as + ': ' + emit_info[1]);
                 existing_rooms[current_room].messages.push(logged_as + ': ' + emit_info[1]);
+                
+                for(var i = 0; i < existing_rooms[current_room].socket_list.length; i++){
+                    existing_rooms[current_room].socket_list[i].emit('chat_message', logged_as + ': ' + emit_info[1]);
+                }
             }
             else{
                 console.log('Spam from ' + logged_as);
@@ -169,6 +182,7 @@ io.on('connection', function(socket){
 
     socket.on('cheatcode', function(msg){
         var cmd = msg.trim();
+        console.log('Console command ' + cmd + ' received from ' + logged_as)
         if(cmd == 'myID'){
             socket.emit('chat_message', 'Your ID is ' + logged_as);
         }
@@ -259,6 +273,14 @@ io.on('connection', function(socket){
         console.log('User ' + logged_as + ' logged out')
         logged_as = undefined;
         socket.handshake.session.logged_as = undefined;
+
+        if(current_room != undefined){
+            var index = existing_rooms[current_room].socket_list.indexOf(socket);
+            if(index != -1){
+                existing_rooms[current_room].socket_list.splice(index, 1);
+                console.log('Socket disconnected from room');
+            }
+        }
         current_room = undefined;
     });
 
@@ -274,6 +296,7 @@ io.on('connection', function(socket){
             current_room = room_id;
             socket.emit('room_connect', existing_rooms[room_id].messages, room_name);
             console.log('User ' + logged_as + ' entered to room ' + room_name.trim());
+            existing_rooms[room_id].socket_list.push(socket);
         }
         else{
             socket.emit('chat_message', 'This room is private');

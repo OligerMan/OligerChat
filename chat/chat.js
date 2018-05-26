@@ -24,6 +24,7 @@ function addMessages(msg_list, login){
     }
 }
 
+
 $(function () {
     var emit_info = new Array();
     var socket = io();
