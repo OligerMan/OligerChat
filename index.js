@@ -47,7 +47,8 @@ class User{
         this.login = login;
         this.hash = password_hash;
         this.score = 0;
-        this.recent_rooms = new Array;
+        this.rooms_created = 0;
+        this.rooms_create_cap = 10;
     }
 }
 
@@ -98,6 +99,39 @@ function isLoginUsed(login){
     return false;
 }
 
+function getUserInfo(login){
+    if(isLoginUsed(login)){
+        for(i = 0; i < users.length; i++){
+            if(login.trim() == users[i].login.trim()){
+                return users[i];
+            }
+        }
+    }
+    return undefined;
+}
+
+function getUserInfo(login){
+    if(isLoginUsed(login)){
+        for(i = 0; i < users.length; i++){
+            if(login.trim() == users[i].login.trim()){
+                return users[i];
+            }
+        }
+    }
+    return undefined;
+}
+
+function getUserId(login){
+    if(isLoginUsed(login)){
+        for(i = 0; i < users.length; i++){
+            if(login.trim() == users[i].login.trim()){
+                return i;
+            }
+        }
+    }
+    return -1;
+}
+
 function getHash(login){
     if(isLoginUsed(login)){
         for(i = 0; i < users.length; i++){
@@ -113,7 +147,7 @@ function getHash(login){
 
 function welcomeMessage(socket){
     socket.emit('chat_message', 'Welcome!!!');
-    socket.emit('chat_message', 'This is global chat without message save, if you want to save your messages, try to enter to room or create your room');
+    socket.emit('chat_message', 'For start chatting just enter to chat room or create your chat room');
     socket.emit('chat_message', 'There are some commands for you:');
     socket.emit('chat_message', '!newroom <room_name> - creates new public room');
     socket.emit('chat_message', '!myID - returns your nickname');
@@ -135,15 +169,21 @@ io.on('connection', function(socket){
     }
 
     var logged_as = undefined;
+    var user_id = undefined;
     var current_room = undefined;
     var first_time = false;
+    var room_num = 0;
+    var room_cap = 0;
 
     if(socket.handshake.session.logged_as){
         logged_as = socket.handshake.session.logged_as;
+        var user_id = getUserId(logged_as);
+        if(user_id == -1){
+            console.log('User ID invalid');
+        }
+        console.log('User ' + logged_as + ' relogged');
         socket.emit('login_success');
     }
-
-    var accepted = false;
 
     socket.on('disconnect', function(){
         socket.handshake.session.islogged -= 1;
@@ -182,35 +222,37 @@ io.on('connection', function(socket){
 
     socket.on('cheatcode', function(msg){
         var cmd = msg.trim();
-        console.log('Console command ' + cmd + ' received from ' + logged_as)
-        if(cmd == 'myID'){
-            socket.emit('chat_message', 'Your ID is ' + logged_as);
-        }
-        else if(cmd.substr(0,7) == 'newroom'){
-            //var status = +msg.substr(8,1);
-            var status = 0;
-            var roomName = msg.substr(8);
-
-            var new_room = new ChatRoom(roomName, status);
-            //var new_room = new ChatRoom(msg.substr(10), status);
-            if(roomName.length <= 32){
-                new_room.members.push(logged_as);
-                existing_rooms.push(new_room);
-                io.emit('update_room_list');
-                console.log('Room ' + new_room.name + ' created with status ' + status);
-            }else{
-                socket.emit('chat_message', 'Room name is too long(more than 32 symbols)')
+        console.log('Console command ' + cmd + ' received from ' + logged_as);
+        if(logged_as != undefined){
+            if(cmd == 'myID'){
+                socket.emit('chat_message', 'Your ID is ' + logged_as);
             }
-        }
-        else if(cmd == 'help'){
-            socket.emit('chat_message', 'There are some commands for you:');
-            socket.emit('chat_message', '   !newroom <room_name> - creates new public room');
-            socket.emit('chat_message', '   !myID - returns your nickname');
-            socket.emit('chat_message', '   !help - shows this message');
-        }
-        else{
-            socket.emit('chat_message', 'Wrong command');
-            console.log('Wrong command');
+            else if(cmd.substr(0,7) == 'newroom'){
+                //var status = +msg.substr(8,1);
+                var status = 0;
+                var roomName = msg.substr(8);
+    
+                var new_room = new ChatRoom(roomName, status);
+                //var new_room = new ChatRoom(msg.substr(10), status);
+                if(roomName.length <= 32){
+                    new_room.members.push(logged_as);
+                    existing_rooms.push(new_room);
+                    io.emit('update_room_list');
+                    console.log('Room ' + new_room.name + ' created with status ' + status);
+                }else{
+                    socket.emit('chat_message', 'Room name is too long(more than 32 symbols)')
+                }
+            }
+            else if(cmd == 'help'){
+                socket.emit('chat_message', 'There are some commands for you:');
+                socket.emit('chat_message', '   !newroom <room_name> - creates new public room');
+                socket.emit('chat_message', '   !myID - returns your nickname');
+                socket.emit('chat_message', '   !help - shows this message');
+            }
+            else{
+                socket.emit('chat_message', 'Wrong command');
+                console.log('Wrong command');
+            }
         }
     });
 
