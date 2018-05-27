@@ -110,17 +110,6 @@ function getUserInfo(login){
     return undefined;
 }
 
-function getUserInfo(login){
-    if(isLoginUsed(login)){
-        for(i = 0; i < users.length; i++){
-            if(login.trim() == users[i].login.trim()){
-                return users[i];
-            }
-        }
-    }
-    return undefined;
-}
-
 function getUserId(login){
     if(isLoginUsed(login)){
         for(i = 0; i < users.length; i++){
@@ -235,12 +224,18 @@ io.on('connection', function(socket){
                 var new_room = new ChatRoom(roomName, status);
                 //var new_room = new ChatRoom(msg.substr(10), status);
                 if(roomName.length <= 32){
-                    new_room.members.push(logged_as);
-                    existing_rooms.push(new_room);
-                    io.emit('update_room_list');
-                    console.log('Room ' + new_room.name + ' created with status ' + status);
+                    if(getRoomId(roomName) == -1){
+                        new_room.members.push(logged_as);
+                        existing_rooms.push(new_room);
+                        io.emit('update_room_list');
+                        console.log('Room ' + new_room.name + ' created with status ' + status);
+                    }
+                    else{
+                        console.log('Room ' + roomName + ' already exists');
+                        socket.emit('chat_message', 'Room with same name already exists');
+                    }
                 }else{
-                    socket.emit('chat_message', 'Room name is too long(more than 32 symbols)')
+                    socket.emit('chat_message', 'Room name is too long(more than 32 symbols)');
                 }
             }
             else if(cmd == 'help'){
@@ -344,6 +339,8 @@ io.on('connection', function(socket){
             else{
                 socket.emit('chat_message', 'This room is private');
             }
+        }else{
+            socket.emit('chat_message', 'Room doesn\'t exist');
         }
     });
 });
