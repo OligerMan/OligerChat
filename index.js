@@ -195,7 +195,7 @@ io.on('connection', function(socket){
             }
             else if(emit_info[1].length < 300){
                 
-                console.log('message: ' + emit_info[1] + ' from user ' + logged_as + ' to room ' + existing_rooms[current_room].name);
+                console.log('message: ' + emit_info[1] + ' from user ' + logged_as + ' to room ' + existing_rooms[current_room].name + ' with ' + existing_rooms[current_room].socket_list.length + ' users');
                 existing_rooms[current_room].messages.push(logged_as + ': ' + emit_info[1]);
                 
                 for(var i = 0; i < existing_rooms[current_room].socket_list.length; i++){
