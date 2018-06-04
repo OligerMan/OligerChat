@@ -100,35 +100,29 @@ function isLoginUsed(login){
 }
 
 function getUserInfo(login){
-    if(isLoginUsed(login)){
         for(i = 0; i < users.length; i++){
             if(login.trim() == users[i].login.trim()){
                 return users[i];
             }
         }
-    }
     return undefined;
 }
 
 function getUserId(login){
-    if(isLoginUsed(login)){
-        for(i = 0; i < users.length; i++){
-            if(login.trim() == users[i].login.trim()){
-                return i;
-            }
+    for(i = 0; i < users.length; i++){
+        if(login.trim() == users[i].login.trim()){
+            return i;
         }
     }
     return -1;
 }
 
 function getHash(login){
-    if(isLoginUsed(login)){
         for(i = 0; i < users.length; i++){
             if(login.trim() == users[i].login.trim()){
                 return users[i].hash;
             }
         }
-    }
     return '';
 }
 
@@ -225,10 +219,22 @@ io.on('connection', function(socket){
                 //var new_room = new ChatRoom(msg.substr(10), status);
                 if(roomName.length <= 32){
                     if(getRoomId(roomName) == -1){
-                        new_room.members.push(logged_as);
+                        if(current_room == undefined){
+                            console.log('Room ' + new_room.name + ' created with status ' + status);
+                        }
+
+                        console.log('Room list request from user ' + logged_as);
+
                         existing_rooms.push(new_room);
-                        io.emit('update_room_list');
-                        console.log('Room ' + new_room.name + ' created with status ' + status);
+
+                        var rooms_name = new Array();
+
+                        for(var i = 0; i < existing_rooms.length; i++){
+                            rooms_name.push(existing_rooms[i].name);
+                        }
+
+                        socket.emit('set_room_list', JSON.stringify(rooms_name));
+                        
                     }
                     else{
                         console.log('Room ' + roomName + ' already exists');
@@ -322,7 +328,14 @@ io.on('connection', function(socket){
     });
 
     socket.on('get_room_list', function(){
-        socket.emit('set_room_list', existing_rooms);
+        console.log('Room list request from user ' + logged_as);
+        var rooms_name = new Array();
+
+        for(var i = 0; i < existing_rooms.length; i++){
+            rooms_name.push(existing_rooms[i].name);
+        }
+
+        socket.emit('set_room_list', JSON.stringify(rooms_name));
     });
 
     socket.on('room_connect', function(room_name){
@@ -339,7 +352,8 @@ io.on('connection', function(socket){
             else{
                 socket.emit('chat_message', 'This room is private');
             }
-        }else{
+        }
+        else{
             socket.emit('chat_message', 'Room doesn\'t exist');
         }
     });

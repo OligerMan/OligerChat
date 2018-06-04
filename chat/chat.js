@@ -2,9 +2,9 @@ function showRoomList(room_list, search){
     $('#room_list').empty();
 
     for(var i = 0; i < room_list.length; i++){
-        var status = room_list[i].name.indexOf(search) + 1;
+        var status = room_list[i].indexOf(search) + 1;
         if(status){
-            $('#room_list').append($('<div class="room_button" id="room' + i + '">').text(room_list[i].name));
+            $('#room_list').append($('<div class="room_button" id="room' + i + '">').text(room_list[i]));
         }
     }
 }
@@ -75,6 +75,7 @@ $(function () {
     });
 
     socket.on('set_room_list', function(room_list){
+        room_list = JSON.parse(room_list);
         showRoomList(room_list, $('#line').val());
     });
 
@@ -87,9 +88,5 @@ $(function () {
             room_name = room_name.substr(0, 12) + '...';
         }
         $('.block_title').text('Current room: ' + room_name);
-    });
-
-    socket.on('update_room_list', function(){
-        socket.emit('get_room_list');
     });
 });
