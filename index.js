@@ -107,7 +107,6 @@ function getUserInfo(login){
         }
     return undefined;
 }
-
 function getUserId(login){
     for(i = 0; i < users.length; i++){
         if(login.trim() == users[i].login.trim()){
@@ -124,6 +123,15 @@ function getHash(login){
             }
         }
     return '';
+}
+
+function roomLogout(room_id, socket){
+    
+    for(var i = 0; i < existing_rooms[room_id].socket_list.length; i++){
+        if(existing_rooms[room_id].socket_list[i] == socket){
+            existing_rooms[room_id].socket_list.splice(i,1);
+        }
+    }
 }
 
 /////////////////////////////////////////////////////
@@ -344,6 +352,9 @@ io.on('connection', function(socket){
         console.log('Connection to room ' + room_name + ' with id ' + room_id);
         if(existing_rooms[room_id] != undefined){
             if(!existing_rooms[room_id].status){
+
+                roomLogout(room_id, socket);
+
                 current_room = room_id;
                 socket.emit('room_connect', existing_rooms[room_id].messages, room_name);
                 console.log('User ' + logged_as + ' entered to room ' + room_name.trim());

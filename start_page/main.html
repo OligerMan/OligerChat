@@ -23,7 +23,40 @@
             <div id="blocks_buffer">
                 <div class="block">
                     <div class="block_title" id="login_title">
-                        Sign in
+                        For new users
+                    </div>
+                    <div class="sign_in_form">
+                        <form action="" id="login_type_form">
+                            <div class="form_container">
+                                <div class="form_name_dict">
+                                    <div class="form_name">
+                                        Login: 
+                                    </div>
+                                    <div class="form_name">
+                                        Password: 
+                                    </div>
+                                    <div class="form_name" id="confirm_form_name">
+                                        Confirm password: 
+                                    </div>
+                                </div>
+                                <div class="input_block">
+                                    <input class="input_form" id="register_form" autocomplete="off"/>
+                                    <input type="password" class="input_form" id="register_password_form" autocomplete="off"/>
+                                    <input class="input_form" id="confirm_password_form" type="password" autocomplete="off"/>
+                                </div>
+                            </div>
+                            <div class="button">
+                                <button type="button" id="register_button">
+                                    Create account
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="block">
+                    <div class="block_title" id="login_title">
+                        For existing users
                     </div>
                     <div class="sign_in_form">
                         <form action="" id="login_type_form">
@@ -42,9 +75,6 @@
                                 </div>
                             </div>
                             <div class="button">
-                                <button type="button" id="register_button">
-                                    Create account
-                                </button>
                                 <button type="button" id="sign_in_button">
                                     Sign in
                                 </button>
@@ -52,6 +82,7 @@
                         </form>
                     </div>
                 </div>
+
                 <div class="block">
                     <div class="block_title">
                         About

@@ -9,36 +9,19 @@ $(function(){
     ////////////
 
     $('#register_button').click(function(){
-        if(form_state == 'login'){
-            $('.input_block').append('<input class="input_form" id="confirm_password_form" type="password" autocomplete="off"/>');
-            $('.form_name_dict').append('<div class="form_name" id="confirm_form_name">Confirm password: </div>');
-            $('#login_form').css('border-color', '');
-            $('#password_form').css('border-color', '');
-            $('#login_title').text('Register');
-            form_state = 'register';
-            $('#login_type_form').attr('id', 'register_type_form');
-
-            $('#sign_in_button').css('background', '#31c5f7');
-            $('#register_button').css('background', '#82e0ff');
-            $('.button').css('flex-direction', 'row-reverse');
-            $('#sign_in_button').css('float', 'left');
-            $('#register_button').css('float', 'right');
-            $('#sign_in_button').css('margin-left', '0px');
-            $('#register_button').css('margin-left', 'auto');
-        }
-        else if(form_state == 'register'){
-            var login = $('#login_form').val();
+        
+            var login = $('#register_form').val();
             var password = $('#password_form').val();
             var confirm_password = $('#confirm_password_form').val();
             
             var fail = false;
 
             if(login.trim() == ''){
-                $('#login_form').css('border-color', 'red');
+                $('#register_form').css('border-color', 'red');
                 alert('Please enter your login');
                 fail = true;
             }else{
-                $('#login_form').css('border-color', '');
+                $('#register_form').css('border-color', '');
             }
             if(!fail && password.trim() == ''){
                 $('#password_form').css('border-color', 'red');
@@ -69,27 +52,10 @@ $(function(){
             if(!fail){
                 socket.emit('register', login, password);
             }
-        }
+        
     });
     $('#sign_in_button').click(function(){
-        if(form_state == 'register'){
-            $('#confirm_password_form').remove();
-            $('#confirm_form_name').remove();
-            $('#login_form').css('border-color', '');
-            $('#password_form').css('border-color', '');
-            $('#login_title').text('Sign in');
-            form_state = 'login';
-            $('#register_type_form').attr('id', 'login_type_form');
-
-            $('#sign_in_button').css('background', '#82e0ff');
-            $('#register_button').css('background', '#31c5f7');
-            $('.button').css('flex-direction', 'row');
-            $('#sign_in_button').css('float', 'right');
-            $('#register_button').css('float', 'left');
-            $('#sign_in_button').css('margin-left', 'auto');
-            $('#register_button').css('margin-left', '0px');
-        }
-        else if(form_state == 'login'){
+        
             var login = $('#login_form').val();
             var password = $('#password_form').val();
             
@@ -111,7 +77,7 @@ $(function(){
             if(!fail){
                 socket.emit('login', login, password);
             }
-        }
+        
     });
 
     socket.on('login_success', function(){
